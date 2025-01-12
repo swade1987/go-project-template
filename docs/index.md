@@ -5,35 +5,43 @@ This is an opinionated go project template to use as a starting point for new pr
 ## Features
 
 - Builds with [GoReleaser](https://goreleaser.com)
-    - Automated with GitHub Actions
-    - Signed with Cosign (providing you generate a private key)
+  - Automated with GitHub Actions
+  - Signed with Cosign (providing you generate a private key)
 - Linting with [golangci-lint](https://golangci-lint.run/)
-    - Automated with GitHub Actions
+  - Automated with GitHub Actions
 - Builds with Docker
-    - While designed to use goreleaser, you can still just run `docker build`
-- Apple Notary Signing Support
+  - While designed to use goreleaser, you can still just run `docker build`
 - Opinionated Layout
-    - Never use `internal/` folder
-    - Everything is under `pkg/` folder
+  - Never use `internal/` folder
+  - Everything is under `pkg/` folder
+- Commits must meet [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+  - Automated with GitHub Actions ([commit-lint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint))
 - Automatic Dependency Management with [Renovate](https://github.com/renovatebot/renovate)
 - Automatic [Semantic Releases](https://semantic-release.gitbook.io/)
 - Documentation with Material for MkDocs
-- API Server Example
-    - Uses Gorilla Mux (yes it's been archived, still the best option)
 - Stubbed out Go Tests (**note:** they are not comprehensive)
 
 ### Opinionated Decisions
 
 - Uses `init` functions for registering commands globally.
-    - This allows for multiple `main` package files to be written and include different commands.
-    - Allows the command code to remain isolated from each other and a simple import to include the command.
+  - This allows for multiple `main` package files to be written and include different commands.
+  - Allows the command code to remain isolated from each other and a simple import to include the command.
+
+### Multi-Platform Builds
+
+This project is designed to build for multiple platforms, including macOS, Linux, and Windows. It also supports
+multiple architectures including amd64 and arm64.
+
+The goreleaser configuration is set up to build for all platforms and architectures by default. It even supports pushing
+multi-architecture docker manifests by default. Some knowledge about GoReleaser's configuration is required should you
+want to remove these capabilities.
 
 ## Building
 
 The following will build binaries in snapshot order.
 
 ```console
-goreleaser --clean --snapshot --skip sign
+make build
 ```
 
 **Note:** we are skipping signing because this project uses cosign's keyless signing with GitHub Actions OIDC provider.
@@ -53,10 +61,21 @@ cosign generate-key-pair
 ## Configure
 
 1. Rename Repository
-2. Generate Cosign Keys (optional if you want to run with signing locally, see above)
-3. Update `.goreleaser.yml`, search/replace go-project-template with new project name, adjust GitHub owner
-4. Update `main.go`,
-5. Update `go.mod`, rename go project (using IDE is best so renames happen across all files)
+1. Generate Cosign Keys (optional if you want to run with signing locally, see above)
+1. Replace swade1987 with your GitHub username or organization across the whole project
+1. Update `.goreleaser.yml`, search/replace go-project-template with new project name, adjust GitHub owner
+1. Update `main.go`,
+1. Update `go.mod`, rename go project (using IDE is best so renames happen across all files)
+
+### Docker
+
+The Dockerfile is set up to build the project and then copy the artifacts from the build into the final image. It is
+also configured to allow you to just run `docker build` directly if you do not want to use GoReleaser.
+
+To make things easier and faster, the Dockerfile has a default build argument set to `go-project-template`. GoReleaser
+will pass the new project name down (if you update the `.goreleaser.yml` file) and the Dockerfile will use that instead.
+
+However, it would be better longer term to update this argument in the file or remove it all together.
 
 ### Signing
 
@@ -70,7 +89,7 @@ a workflow from a workflow if both are run by the automatically generated GitHub
 
 1. Create PAT that has content `write` permissions to the repository
 2. Create GitHub Action Secret
-    - `SEMANTIC_GITHUB_TOKEN` -> populated with PAT from step 1
+  - `SEMANTIC_RELEASER_GITHUB_TOKEN` -> populated with PAT from step 1
 3. Done
 
 ## Documentation
