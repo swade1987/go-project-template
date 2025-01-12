@@ -3,9 +3,10 @@ package common
 import (
 	"fmt"
 
-	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/urfave/cli/v2"
 )
 
 func Flags() []cli.Flag {
@@ -24,21 +25,6 @@ func Flags() []cli.Flag {
 
 func Before(c *cli.Context) error {
 	config := zap.NewProductionConfig()
-
-	// Handle color settings
-	if c.Bool("log-disable-color") {
-		config.EncoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
-	} else {
-		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	}
-
-	// Handle timestamp settings
-	if c.Bool("log-full-timestamp") {
-		config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	}
-
-	// Handle caller settings
-	config.DisableCaller = !c.Bool("log-caller")
 
 	// Set log level
 	switch c.String("log-level") {

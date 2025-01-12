@@ -1,9 +1,10 @@
 package example
 
 import (
+	"go.uber.org/zap"
+
 	"github.com/swade1987/go-project-template/pkg/common"
 	"github.com/urfave/cli/v2"
-	"go.uber.org/zap"
 )
 
 var logger = zap.L()

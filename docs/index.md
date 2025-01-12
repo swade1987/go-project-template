@@ -1,5 +1,10 @@
 # Go Project Template
 
+![GitHub License](https://img.shields.io/github/license/swade1987/go-project-template)
+[![Go Report Card](https://goreportcard.com/badge/github.com/swade1987/go-project-template)](https://goreportcard.com/report/github.com/swade1987/go-project-template)
+![GitHub Release](https://img.shields.io/github/v/release/swade1987/go-project-template?include_prereleases)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/swade1987/go-project-template/total)
+
 This is an opinionated go project template to use as a starting point for new projects.
 
 ## Features
@@ -89,7 +94,7 @@ a workflow from a workflow if both are run by the automatically generated GitHub
 
 1. Create PAT that has content `write` permissions to the repository
 2. Create GitHub Action Secret
-  - `SEMANTIC_RELEASER_GITHUB_TOKEN` -> populated with PAT from step 1
+   - `SEMANTIC_RELEASER_GITHUB_TOKEN` -> populated with PAT from step 1
 3. Done
 
 ## Documentation
