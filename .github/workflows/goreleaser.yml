@@ -46,7 +46,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.SEMANTIC_RELEASER_GITHUB_TOKEN }}
       - name: install cosign
         uses: sigstore/cosign-installer@dc72c7d5c4d10cd6bcb8cf6e3fd625a9e5e537da # v3
       - name: install quill
@@ -76,7 +76,7 @@ jobs:
           version: latest
           args: release --clean ${{ env.GORELEASER_ARGS }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASER_GITHUB_TOKEN }}
       - name: push docker images (for branches)
         if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
         run: |
