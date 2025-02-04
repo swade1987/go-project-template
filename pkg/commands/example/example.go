@@ -7,9 +7,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var logger = zap.L()
-
 func Execute(c *cli.Context) error {
+	var logger = zap.L()
 	logger.Info("example called")
 	return nil
 }
